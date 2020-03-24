@@ -1,17 +1,17 @@
-import { AuthenticateService } from './../services/authenticate.service';
 import { Component, OnInit } from '@angular/core';
+import { AuthenticateService } from './../services/authenticate.service';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
-
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-register',
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
 })
-export class LoginPage implements OnInit {
-  loginForm: FormGroup;
+export class RegisterPage  {
+
+  registerForm: FormGroup;
   validation_messages = {
     email: [
       {type:"required", message:"El email es requerido"},
@@ -20,7 +20,15 @@ export class LoginPage implements OnInit {
     password: [
       {type:"required", message:"El password es requerido"},
       {type:"minlength", message:"Minimo 5 letras para el password"}
-    ]
+    ],
+    nombre: [
+      {type:"required", message:"El nombre es requerido"},
+      {type:"minlength", message:"Minimo 5 letras para el nombre"}
+    ],
+    apellido: [
+      {type:"required", message:"El apellido es requerido"},
+      {type:"minlength", message:"Minimo 5 letras para el apellido"}
+    ],
   };
   errorMessage: string = '';
 
@@ -29,10 +37,18 @@ export class LoginPage implements OnInit {
     private authService: AuthenticateService,
     private navCtrl: NavController ,
     private storage: Storage ){
-    this.loginForm = this.formBuilder.group({
+    this.registerForm = this.formBuilder.group({
       email: new FormControl("", Validators.compose([
         Validators.required,
         Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
+      ])),
+      nombre: new FormControl("", Validators.compose([
+        Validators.required,
+        Validators.minLength(5)
+      ])),
+      apellido: new FormControl("", Validators.compose([
+        Validators.required,
+        Validators.minLength(5)
       ])),
       password: new FormControl("", Validators.compose([
         Validators.required,
@@ -41,21 +57,13 @@ export class LoginPage implements OnInit {
     });
    }
 
-  ngOnInit() {
-  }
+   register(userData){
+    this.authService.registerUser(userData).then(()=>{
+      this.navCtrl.navigateBack("/login");
+    });
+   }
 
-  loginUser(credentials){
-    this.authService.loginUser(credentials).then(res=>{
-      this.errorMessage="";
-      this.storage.set('isUserLoggedIn', true);
-      this.navCtrl.navigateForward("/home");
-    })
-    .catch(err => {
-      this.errorMessage = err;
-    })
-    ;
-  }
-  goToRegister(){
-    this.navCtrl.navigateForward('/register');
-  }
+   goToLogin(){
+     this.navCtrl.navigateBack("/login");
+   }
 }

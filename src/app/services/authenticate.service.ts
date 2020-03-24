@@ -1,11 +1,13 @@
+import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticateService {
 
-  constructor() { }
+  constructor( private storage:Storage) { }
 
   loginUser(credential){
     return new Promise((accept, reject)=>{
@@ -15,5 +17,10 @@ export class AuthenticateService {
         reject("Login incorrecto");
       }
     });
+  }
+
+  registerUser(userData){
+    userData.password = btoa(userData.password);
+    return this.storage.set('user', userData);
   }
 }
