@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'menu', 
     loadChildren: './menu/menu.module#MenuPageModule' ,
     canActivate: [LoginGuard, IntroGuard]},
+  { path: 'songs-modal', loadChildren: './songs-modal/songs-modal.module#SongsModalPageModule' },
 ];
 
 @NgModule({
