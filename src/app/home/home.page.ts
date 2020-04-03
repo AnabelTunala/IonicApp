@@ -18,6 +18,15 @@ export class HomePage {
   songs: any[] = [];
   albums: any[] = [];
   artists: any[] = [];
+  song:{
+    preview_url: string;
+    playing: boolean;
+    name: string;
+  } = { preview_url: "",
+    playing: false,
+    name: ""
+  };
+  currentSong: HTMLAudioElement;
   constructor(private musicService:PlatziMusicService, private modalController: ModalController) {}
 
   ionViewDidEnter(){
@@ -31,14 +40,29 @@ export class HomePage {
 
   async showSongs(artist){
     const songs =  await this.musicService.getArtistsTopTracks(artist.id);
-    console.log("id artis:"+artist.id);    
     const modal = await this.modalController.create({
       component: SongsModalPage,
-      componentProps:{
+      componentProps: {
         songs: songs.tracks,
         artist: artist.name
       }
     });
+    modal.onDidDismiss().then(dataRetuned => {
+      this.song = dataRetuned.data;
+      console.log(this.song);
+    });
+
     return await modal.present();
+  }
+
+  play() {
+    this.currentSong = new Audio(this.song.preview_url);
+    this.currentSong.play();
+    this.song.playing = true;
+  }
+
+  pause(){
+    this.currentSong.pause();
+    this.song.playing = false;
   }
 }

@@ -40,3 +40,26 @@
 
     
 </ion-content>
+<ion-footer >
+<ion-grid>
+  <ion-row *ngIf="currentSong">
+    <ion-col class="ion-text-start">0:00 </ion-col>
+    <ion-col class="ion-text-end">0:00 </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid>
+  <ion-row>
+    <ion-col size="1">
+      <ion-icon name="heart"></ion-icon>
+    </ion-col>
+    <ion-col size="10">
+      <ion-text>{{song.name || "Aun no has seleccionado una cancion"}}</ion-text>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon name="play" (click)="play()" *ngIf="!song.playing"></ion-icon>
+      <ion-icon name="pause" (click)="pause()" *ngIf="song.playing"></ion-icon>
+    </ion-col>
+  </ion-row>  
+</ion-grid>
+<ion-progress-bar [value]="0.5"></ion-progress-bar>
+</ion-footer>

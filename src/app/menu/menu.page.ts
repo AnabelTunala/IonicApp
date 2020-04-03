@@ -23,4 +23,19 @@ export class MenuPage implements OnInit {
     // o se puede remover: this.storage.remove("isUserLoggedIn");
     this.navCtrl.navigateRoot('/login');
   }
+
+  goToSettings(){
+    this.navCtrl.navigateRoot('menu/settings');
+    this.menu.close();
+  }
+
+  goToSports(){
+    this.navCtrl.navigateRoot('menu/sports');
+    this.menu.close();
+  }
+
+  goToHome(){
+    this.navCtrl.navigateRoot('menu/home');
+    this.menu.close();
+  }
 }
